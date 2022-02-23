@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mod_9;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,11 +22,17 @@ namespace Mod_10
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Telegram.Bot.Types.Update e;
-        public Telegram.Bot.TelegramBotClient _client;
+        TelegraBotHelper bot;
+        ReadMessage read;
+        
         public MainWindow()
         {
+            bot = new TelegraBotHelper();
             InitializeComponent();
+            read = new ReadMessage();
+            logList.ItemsSource = bot._client.chats
+
+            
         }
 
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
