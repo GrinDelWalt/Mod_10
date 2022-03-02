@@ -14,6 +14,7 @@ namespace Mod_9
 {
     public class TelegraBotHelper
     {
+        public Mod_10.MainWindow window;
         public Telegram.Bot.Types.Update e;
         IEnumerable<IGrouping<string, FileInfo>> queryGroupByExt;
 
@@ -35,6 +36,7 @@ namespace Mod_9
         public TelegraBotHelper()
         {
             button = new Button();
+            window = new Mod_10.MainWindow(e);
             
             this._token = File.ReadAllText(Environment.CurrentDirectory + @"\Token_bot.txt");
         }
@@ -66,6 +68,10 @@ namespace Mod_9
                                 this.e = e;
                                 MessageReader();
                                 offset = e.Id + 1;
+                                window.Dispatcher.Invoke(() =>
+                                {
+                                    
+                                });
                             }
                         }
                     }

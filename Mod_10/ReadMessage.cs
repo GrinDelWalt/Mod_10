@@ -16,6 +16,7 @@ namespace Mod_10
         public ObservableCollection<Chats> chats { get; set; }
 
         public MainWindow window;
+        public Mod_9.Program program;
 
         
         public ReadMessage(MainWindow window)
@@ -28,11 +29,8 @@ namespace Mod_10
         public void MessageLog()
         {
 
-           
-            
-            window.Dispatcher.Invoke(() =>
+            program.Dispatcher.Invoke(() =>
             {
-                Mod_9.Program.Main();
 
                 chats = new ObservableCollection<Chats>();
                 Debug.WriteLine("----");

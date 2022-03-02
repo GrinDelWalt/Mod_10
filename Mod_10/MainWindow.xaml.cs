@@ -22,19 +22,19 @@ namespace Mod_10
     /// </summary>
     public partial class MainWindow : Window
     {
-        TelegraBotHelper bot;
+        
         ReadMessage read;
         
         
-        public MainWindow()
+        public MainWindow(Telegram.Bot.Types.Update e)
         {
-            bot = new TelegraBotHelper();
+            
             InitializeComponent();
             read = new ReadMessage(this);
 
             logList.ItemsSource = read.chats;
-            
-            Mod_9.Program.Main();
+
+            read.MessageLog();
             
         }
 
