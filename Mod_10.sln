@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mod_10", "Mod_10\Mod_10.csproj", "{4D63624A-ABB8-42B5-9E7C-790E51F4E265}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mod_9", "..\..\..\модуль 9\ДЗ\Mod_9\Mod_9\Mod_9.csproj", "{59E20112-DACD-47E1-B0A5-62D2F6C01482}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mod_9", "Mod_9\Mod_9.csproj", "{59E20112-DACD-47E1-B0A5-62D2F6C01482}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

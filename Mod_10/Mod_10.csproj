@@ -136,11 +136,5 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\модуль 9\ДЗ\Mod_9\Mod_9\Mod_9.csproj">
-      <Project>{59e20112-dacd-47e1-b0a5-62d2f6c01482}</Project>
-      <Name>Mod_9</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
