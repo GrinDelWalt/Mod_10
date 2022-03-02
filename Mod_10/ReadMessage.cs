@@ -18,25 +18,33 @@ namespace Mod_10
         public MainWindow window;
 
         
-        public ReadMessage()
+        public ReadMessage(MainWindow window)
         {
             bot = new Mod_9.TelegraBotHelper();
-        }
-        private void MessageLog()
-        {
+            this.window = window;
             chats = new ObservableCollection<Chats>();
-            Debug.WriteLine("----");
+            
+        }
+        public void MessageLog()
+        {
 
-            string messageText = bot.e.Message.Text;
-            string name = bot.e.Message.Chat.FirstName;
-            long id = bot.e.Message.Chat.Id;
-
-            string text = $"{DateTime.Now.ToLongTimeString()}: {id} {name} {messageText}";
-
-            Debug.WriteLine(text);
+           
             
             window.Dispatcher.Invoke(() =>
             {
+                Mod_9.Program.Main();
+
+                chats = new ObservableCollection<Chats>();
+                Debug.WriteLine("----");
+
+                string messageText = bot.e.Message.Text;
+                string name = bot.e.Message.Chat.FirstName;
+                long id = bot.e.Message.Chat.Id;
+
+                string text = $"{DateTime.Now.ToLongTimeString()}: {id} {name} {messageText}";
+
+                Debug.WriteLine(text);
+
                 if (chats.Count != 0)
                 {
                     Chats chat = chats.FirstOrDefault(x => x.Id == bot.e.Message.Chat.Id);

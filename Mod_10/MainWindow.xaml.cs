@@ -25,15 +25,21 @@ namespace Mod_10
         TelegraBotHelper bot;
         ReadMessage read;
         
+        
         public MainWindow()
         {
             bot = new TelegraBotHelper();
             InitializeComponent();
-            read = new ReadMessage();
-            logList.ItemsSource = bot._client.chats
+            read = new ReadMessage(this);
 
+            logList.ItemsSource = read.chats;
+            
+            Mod_9.Program.Main();
             
         }
+
+        
+
 
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
         {
