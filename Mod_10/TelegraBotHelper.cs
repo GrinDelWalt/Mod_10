@@ -1,5 +1,4 @@
-﻿using EmptyFiles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,12 +9,12 @@ using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace Mod_9
+namespace Mod_10
 {
     public class TelegraBotHelper
     {
-        public Mod_10.MainWindow window;
-        public Mod_10.ReadMessage readMessage;
+        public MainWindow window;
+        public ReadMessage readMessage;
         public Telegram.Bot.Types.Update e;
         IEnumerable<IGrouping<string, FileInfo>> queryGroupByExt;
 
@@ -36,7 +35,7 @@ namespace Mod_9
         /// <param name="token"></param>
         public TelegraBotHelper()
         {
-            readMessage = new Mod_10.ReadMessage(window);
+            readMessage = new ReadMessage(window);
             button = new Button();
             
             this._token = File.ReadAllText(Environment.CurrentDirectory + @"\Token_bot.txt");
@@ -69,10 +68,13 @@ namespace Mod_9
                                 this.e = e;
                                 MessageReader();
                                 offset = e.Id + 1;
-                                window.Dispatcher.Invoke(() =>
+                                if (e.Message.Text != null)
                                 {
-                                    readMessage.MessageLog(e.Message.Text, e.Message.Chat.FirstName, e.Message.Chat.Id);
-                                });
+                                    window.Dispatcher.Invoke(() =>
+                                    {
+                                        readMessage.MessageLog(e.Message.Text, e.Message.Chat.FirstName, e.Message.Chat.Id);
+                                    });
+                                }
                             }
                         }
                     }

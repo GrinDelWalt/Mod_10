@@ -1,7 +1,8 @@
-﻿using Mod_9;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,22 +24,18 @@ namespace Mod_10
     public partial class MainWindow : Window
     {
         
-        ReadMessage read;
         
-        
-        public MainWindow(Telegram.Bot.Types.Update e)
+        static MainWindow()
         {
-            
-            InitializeComponent();
-            read = new ReadMessage(this);
+            try
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-            logList.ItemsSource = read.chats;
-
-            read.MessageLog();
-            
+                TelegraBotHelper hlp = new TelegraBotHelper();
+                hlp.GetUpdates();
+            }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
         }
-
-        
 
 
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)

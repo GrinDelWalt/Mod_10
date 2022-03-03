@@ -10,45 +10,50 @@ namespace Mod_10
 {
     public class ReadMessage
     {
-        Mod_9.TelegraBotHelper bot;
-        
-
-        public ObservableCollection<Chats> chats { get; set; }
+        public ObservableCollection<Chats> Chats { get; set; }
 
         public MainWindow window;
-        public Mod_9.Program program;
 
+        public ObservableCollection<Message> messages { get; set; }
         
         public ReadMessage(MainWindow window)
         {
-            bot = new Mod_9.TelegraBotHelper();
+            
             this.window = window;
-            chats = new ObservableCollection<Chats>();
+            Chats = new ObservableCollection<Chats>();
             
         }
+        /// <summary>
+        /// Read Message
+        /// </summary>
+        /// <param name="messageText">Text</param>
+        /// <param name="name">Name</param>
+        /// <param name="id">Id</param>
         public void MessageLog(string messageText, string name, long id)
         {
-            w.Dis
             Debug.WriteLine("----");
-            messageText = bot.e.Message.Text;
-            name = bot.e.Message.Chat.FirstName;
-            id = bot.e.Message.Chat.Id;
+
             string text = $"{DateTime.Now.ToLongTimeString()}: {id} {name} {messageText}";
 
-                Debug.WriteLine(text);
+            Debug.WriteLine(text);
 
-                if (chats.Count != 0)
+            DateTime date = DateTime.Now;
+
+            window.Dispatcher.Invoke(()=>
+            {
+                if (Chats.Count != 0)
                 {
-                    Chats chat = chats.FirstOrDefault(x => x.Id == bot.e.Message.Chat.Id);
+                    Chats chat = Chats.FirstOrDefault(x => x.Id == id);
                     if (chat != null)
                     {
-
+                        chat.MessageCollection.Add(new Message(messageText, date));
                     }
                     else
                     {
-                        chats.Add(new Chats(id, name, messageText, DateTime.Now));
+                        Chats.Add(new Chats(id, name, messageText, DateTime.Now));
                     }
                 }
+            });
         }
 
     }
