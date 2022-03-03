@@ -23,25 +23,17 @@ namespace Mod_10
     /// </summary>
     public partial class MainWindow : Window
     {
-        
-        
         static MainWindow()
         {
-            try
-            {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-                TelegraBotHelper hlp = new TelegraBotHelper();
-                hlp.GetUpdates();
-            }
-            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+           
         }
-
-
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
         {
 
         }
+        private void Start_Click(object sender, RoutedEventArgs e)
+        {
+            ReadMessage.StartBot();
+        }
     }
-   
 }
