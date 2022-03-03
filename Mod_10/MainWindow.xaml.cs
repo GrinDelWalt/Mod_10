@@ -23,9 +23,10 @@ namespace Mod_10
     /// </summary>
     public partial class MainWindow : Window
     {
-        static MainWindow()
+        ReadMessage read;
+        public MainWindow()
         {
-           
+            read = new ReadMessage();
         }
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
         {

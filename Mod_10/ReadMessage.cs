@@ -24,13 +24,13 @@ namespace Mod_10
             Chats = new ObservableCollection<Chats>();
             
         }
-        public static void StartBot()
+        public void StartBot()
         {
             try
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                TelegraBotHelper hlp = new TelegraBotHelper();
+                TelegraBotHelper hlp = new TelegraBotHelper(window);
                 hlp.GetUpdates();
             }
             catch (Exception ex) { Debug.WriteLine(ex.Message); }

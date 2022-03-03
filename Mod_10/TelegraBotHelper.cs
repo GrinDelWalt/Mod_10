@@ -13,7 +13,7 @@ namespace Mod_10
 {
     public class TelegraBotHelper
     {
-        public MainWindow window;
+        public MainWindow _window;
         public ReadMessage readMessage;
         public Telegram.Bot.Types.Update e;
         IEnumerable<IGrouping<string, FileInfo>> queryGroupByExt;
@@ -33,10 +33,11 @@ namespace Mod_10
         /// токен
         /// </summary>
         /// <param name="token"></param>
-        public TelegraBotHelper()
+        public TelegraBotHelper(MainWindow window)
         {
-            readMessage = new ReadMessage(window);
+            readMessage = new ReadMessage(this._window);
             button = new Button();
+            this._window = window;
             
             this._token = File.ReadAllText(Environment.CurrentDirectory + @"\Token_bot.txt");
         }
@@ -70,7 +71,7 @@ namespace Mod_10
                                 offset = e.Id + 1;
                                 if (e.Message.Text != null)
                                 {
-                                    window.Dispatcher.Invoke(() =>
+                                    _window.Dispatcher.Invoke(() =>
                                     {
                                         readMessage.MessageLog(e.Message.Text, e.Message.Chat.FirstName, e.Message.Chat.Id);
                                     });
