@@ -70,7 +70,7 @@ namespace Mod_9
                                 offset = e.Id + 1;
                                 window.Dispatcher.Invoke(() =>
                                 {
-                                    
+                                    Mod_10.ReadeMessage.MessageLog();
                                 });
                             }
                         }

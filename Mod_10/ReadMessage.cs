@@ -26,20 +26,14 @@ namespace Mod_10
             chats = new ObservableCollection<Chats>();
             
         }
-        public void MessageLog()
+        public void MessageLog(string messageText, string name, long id)
         {
-
-            program.Dispatcher.Invoke(() =>
-            {
-
-                chats = new ObservableCollection<Chats>();
-                Debug.WriteLine("----");
-
-                string messageText = bot.e.Message.Text;
-                string name = bot.e.Message.Chat.FirstName;
-                long id = bot.e.Message.Chat.Id;
-
-                string text = $"{DateTime.Now.ToLongTimeString()}: {id} {name} {messageText}";
+            w.Dis
+            Debug.WriteLine("----");
+            messageText = bot.e.Message.Text;
+            name = bot.e.Message.Chat.FirstName;
+            id = bot.e.Message.Chat.Id;
+            string text = $"{DateTime.Now.ToLongTimeString()}: {id} {name} {messageText}";
 
                 Debug.WriteLine(text);
 
@@ -55,15 +49,6 @@ namespace Mod_10
                         chats.Add(new Chats(id, name, messageText, DateTime.Now));
                     }
                 }
-                
-                //if (chats.Id.)
-                //{
-
-                //}
-                
-                
-            });
-
         }
 
     }
