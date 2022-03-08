@@ -15,30 +15,11 @@
                  VerticalAlignment="Top"
                  Width="499"/>
         <Button x:Name="ButtonMessegePush"
-                Content="Button"
+                Content="Massege"
                 HorizontalAlignment="Left"
-                Margin="709,391,0,0"
+                Margin="709,388,0,0"
                 VerticalAlignment="Top"
-                Width="75" Click="ButtonMessegePush_Click"/>
-        <ListView x:Name="logList"
-                  HorizontalAlignment="Left"
-                  Height="375"
-                  Margin="10,36,0,0"
-                  VerticalAlignment="Top"
-                  Width="190">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        
-        
-        <ListBox HorizontalAlignment="Left"
-                 Height="324"
-                 Margin="205,36,0,0"
-                 VerticalAlignment="Top"
-                 Width="499"/>
+                Width="75" Click="ButtonMessegePush_Click" Height="22"/>
         <TextBlock HorizontalAlignment="Left"
                    Margin="10,10,0,0"
                    TextWrapping="Wrap"
@@ -47,12 +28,33 @@
                    VerticalAlignment="Top"
                    Height="21"
                    Width="190" FontWeight="Bold"/>
-        <Button x:Name="Start"
-                Content="Start"
-                HorizontalAlignment="Left"
-                Margin="709,36,0,0"
-                VerticalAlignment="Top"
-                Width="75" Click="Start_Click"/>
+        <ListBox x:Name="logList"
+            HorizontalAlignment="Left"
+                 Height="374"
+                 Margin="10,36,0,0"
+                 VerticalAlignment="Top" Width="190">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Black"
+                            Margin="5"
+                            BorderThickness="1"
+                            CornerRadius="10">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="{Binding Name}" Margin="0" FontSize="15"/>
+                            <TextBlock Text="{Binding Text}" Margin="0" FontSize="15"/>
+                            <TextBlock Text="{Binding Date}" Margin="0" FontSize="15"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListView HorizontalAlignment="Left" Height="324" Margin="205,36,0,0" VerticalAlignment="Top" Width="579">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
 
     </Grid>

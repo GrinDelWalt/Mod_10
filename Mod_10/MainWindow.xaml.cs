@@ -24,17 +24,18 @@ namespace Mod_10
     public partial class MainWindow : Window
     {
         ReadMessage read;
+
+
         public MainWindow()
         {
-            read = new ReadMessage();
+            InitializeComponent();
+            read = new ReadMessage(this);
+            logList.ItemsSource = read.Chats;
+            read.StartBot();
         }
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-        private void Start_Click(object sender, RoutedEventArgs e)
-        {
-            ReadMessage.StartBot();
         }
     }
 }

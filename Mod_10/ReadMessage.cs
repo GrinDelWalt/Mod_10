@@ -16,13 +16,13 @@ namespace Mod_10
         public MainWindow window;
 
         public ObservableCollection<Message> messages { get; set; }
-        
+
         public ReadMessage(MainWindow window)
         {
-            
+
             this.window = window;
             Chats = new ObservableCollection<Chats>();
-            
+
         }
         public void StartBot()
         {
@@ -51,20 +51,19 @@ namespace Mod_10
 
             DateTime date = DateTime.Now;
 
-            window.Dispatcher.Invoke(()=>
+            window.Dispatcher.Invoke(() =>
             {
-                if (Chats.Count != 0)
+
+                Chats chat = Chats.FirstOrDefault(x => x.Id == id);
+                if (chat != null)
                 {
-                    Chats chat = Chats.FirstOrDefault(x => x.Id == id);
-                    if (chat != null)
-                    {
-                        chat.MessageCollection.Add(new Message(messageText, date));
-                    }
-                    else
-                    {
-                        Chats.Add(new Chats(id, name, messageText, DateTime.Now));
-                    }
+                    chat.MessageCollection.Add(new Message(messageText, date));
                 }
+                else
+                {
+                    Chats.Add(new Chats(id, name, messageText, DateTime.Now));
+                }
+
             });
         }
 

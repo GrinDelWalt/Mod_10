@@ -26,7 +26,7 @@ namespace Mod_10
         public Button button;
 
         string path;
-        
+
         public Telegram.Bot.TelegramBotClient _client;
         private readonly string _token;
         /// <summary>
@@ -35,55 +35,58 @@ namespace Mod_10
         /// <param name="token"></param>
         public TelegraBotHelper(MainWindow window)
         {
-            readMessage = new ReadMessage(this._window);
-            button = new Button();
             this._window = window;
-            
+            readMessage = new ReadMessage(window);
+            button = new Button();
             this._token = File.ReadAllText(Environment.CurrentDirectory + @"\Token_bot.txt");
         }
 
         /// <summary>
         /// проверка на наличие новых данных + Timeout
         /// </summary>
-        internal void GetUpdates()
+        internal async void GetUpdates()
         {
-            if (path == null)
+            await Task.Run(() =>
             {
-                path = Environment.CurrentDirectory;
-                Directory.CreateDirectory(path + "\\File\\");
-            }
-            _client = new Telegram.Bot.TelegramBotClient(_token);
-            var me = _client.GetMeAsync().Result;
-            if (me != null && !string.IsNullOrEmpty(me.Username))
-            {
-                int offset = 0;
-                while (true)
+                if (path == null)
                 {
-                    try
+                    path = Environment.CurrentDirectory;
+                    Directory.CreateDirectory(path + "\\File\\");
+                }
+                _client = new Telegram.Bot.TelegramBotClient(_token);
+                var me = _client.GetMeAsync().Result;
+                if (me != null && !string.IsNullOrEmpty(me.Username))
+                {
+                    int offset = 0;
+                    while (true)
                     {
-                        var updates = _client.GetUpdatesAsync(offset).Result;
-                        if (updates != null && updates.Count() > 0)
+                        try
                         {
-                            foreach (var e in updates)
+                            var updates = _client.GetUpdatesAsync(offset).Result;
+                            if (updates != null && updates.Count() > 0)
                             {
-                                this.e = e;
-                                MessageReader();
-                                offset = e.Id + 1;
-                                if (e.Message.Text != null)
+                                foreach (var e in updates)
                                 {
-                                    _window.Dispatcher.Invoke(() =>
+                                    this.e = e;
+                                    MessageReader();
+                                    offset = e.Id + 1;
+                                    if (e.Message.Text != null)
                                     {
-                                        readMessage.MessageLog(e.Message.Text, e.Message.Chat.FirstName, e.Message.Chat.Id);
-                                    });
+                                        _window.Dispatcher.Invoke(() =>
+                                        {
+                                            readMessage.MessageLog(e.Message.Text, e.Message.Chat.FirstName, e.Message.Chat.Id);
+                                        });
+                                    }
                                 }
                             }
                         }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        Thread.Sleep(1000);
                     }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
-                    Thread.Sleep(1000);
                 }
-            }
+            });
         }
+
         /// <summary>
         /// определения типа входных данных
         /// </summary>
@@ -109,7 +112,7 @@ namespace Mod_10
                     {
                         Callback(e.CallbackQuery.Data);
                     }
-                   
+
                     break;
                 default:
                     Console.WriteLine("необработанный тип данных");
@@ -133,7 +136,7 @@ namespace Mod_10
                 Console.WriteLine($"{text} TypeMessage: {e.Message.Type.ToString()}");
             }
         }
-       
+
         /// <summary>
         /// Работа с архивом файлов
         /// </summary>
@@ -230,7 +233,7 @@ namespace Mod_10
         /// <param name="a">chat ID</param>
         private async void WorkingWithFile(string type)
         {
-            
+
             long id = e.Message.Chat.Id;
             string[] fotoList = Directory.GetFiles(this.path + "\\File", type);
             Dictionary<int, string> path = new Dictionary<int, string>();
@@ -285,7 +288,7 @@ namespace Mod_10
         /// </summary>
         private void WorkingWithDocuments()
         {
-            
+
             DirectoryInfo dir = new DirectoryInfo(Environment.CurrentDirectory + "\\File");
             IEnumerable<FileInfo> fileList = dir.GetFiles("*.*", SearchOption.AllDirectories);
             var queryGroupByExt =
@@ -323,7 +326,7 @@ namespace Mod_10
         /// </summary>
         private void DocProcessing()
         {
-            
+
             foreach (var fileGroup in this.queryGroupByExt)
             {
                 if (e.CallbackQuery != null && fileGroup.Key == e.CallbackQuery.Data)
