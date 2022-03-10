@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Mod_10
 {
@@ -13,57 +14,58 @@ namespace Mod_10
     {
         public ObservableCollection<Chats> Chats { get; set; }
 
-        public MainWindow window;
+        object sender;
+        Telegram.Bot.Args.MessageEventArgs e;
+        ListBox logList;
+        public MainWindow _window;
 
         public ObservableCollection<Message> messages { get; set; }
 
-        public ReadMessage(MainWindow window)
+        public ReadMessage(ListBox logList, MainWindow window)
         {
-
-            this.window = window;
+            this.logList = logList;
+            this._window = window;
             Chats = new ObservableCollection<Chats>();
 
         }
         public void StartBot()
         {
-            try
-            {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-                TelegraBotHelper hlp = new TelegraBotHelper(window);
-                hlp.GetUpdates();
-            }
-            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            
         }
+        //public void Data(string name, string msg, long id)
+        //{
+        //    this.name = name;
+        //    this.e.Message.Text = msg;
+        //    this.e.Message.Chat.Id = id;
+        //}
         /// <summary>
         /// Read Message
         /// </summary>
         /// <param name="messageText">Text</param>
         /// <param name="name">Name</param>
         /// <param name="id">Id</param>
-        public void MessageLog(string messageText, string name, long id)
+        public void MessageLog(object sender, Telegram.Bot.Args.MessageEventArgs e)
         {
             Debug.WriteLine("----");
-
-            string text = $"{DateTime.Now.ToLongTimeString()}: {id} {name} {messageText}";
+            string text = $"{DateTime.Now.ToLongTimeString()}: {e.Message.Chat.Id} {e.Message.Chat.FirstName} {e.Message.Text}";
 
             Debug.WriteLine(text);
 
-            DateTime date = DateTime.Now;
+            string date = DateTime.Now.ToLongDateString();
 
-            window.Dispatcher.Invoke(() =>
+            _window.Dispatcher.Invoke(() =>
             {
 
-                Chats chat = Chats.FirstOrDefault(x => x.Id == id);
+                Chats chat = Chats.FirstOrDefault(x => x.Id == e.Message.Chat.Id);
                 if (chat != null)
                 {
-                    chat.MessageCollection.Add(new Message(messageText, date));
+                    chat.MessageCollection.Add(new Message(e.Message.Text, date));
                 }
                 else
                 {
-                    Chats.Add(new Chats(id, name, messageText, DateTime.Now));
+                    Chats.Add(new Chats(e.Message.Chat.Id, e.Message.Chat.FirstName, e.Message.Text, date));
                 }
-
+                logList.ItemsSource = Chats;
             });
         }
 

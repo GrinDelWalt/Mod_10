@@ -29,9 +29,15 @@ namespace Mod_10
         public MainWindow()
         {
             InitializeComponent();
-            read = new ReadMessage(this);
-            logList.ItemsSource = read.Chats;
-            read.StartBot();
+            try
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                TelegraBotHelper hlp = new TelegraBotHelper(logList, this);
+                hlp.GetUpdates();
+            }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+
         }
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
         {

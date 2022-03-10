@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -22,6 +23,7 @@ namespace Mod_10
         public string filePath;
         public string fileMessage;
         private bool callback;
+        public ListBox _logList;
 
         public Button button;
 
@@ -33,12 +35,13 @@ namespace Mod_10
         /// токен
         /// </summary>
         /// <param name="token"></param>
-        public TelegraBotHelper(MainWindow window)
+        public TelegraBotHelper(ListBox logList, MainWindow window)
         {
             this._window = window;
-            readMessage = new ReadMessage(window);
+            readMessage = new ReadMessage(logList, _window);
             button = new Button();
             this._token = File.ReadAllText(Environment.CurrentDirectory + @"\Token_bot.txt");
+            
         }
 
         /// <summary>
@@ -46,6 +49,9 @@ namespace Mod_10
         /// </summary>
         internal async void GetUpdates()
         {
+            _client = new Telegram.Bot.TelegramBotClient(_token);
+            _client.OnMessage += readMessage.MessageLog;
+            _client.StartReceiving();
             await Task.Run(() =>
             {
                 if (path == null)
@@ -53,7 +59,7 @@ namespace Mod_10
                     path = Environment.CurrentDirectory;
                     Directory.CreateDirectory(path + "\\File\\");
                 }
-                _client = new Telegram.Bot.TelegramBotClient(_token);
+               
                 var me = _client.GetMeAsync().Result;
                 if (me != null && !string.IsNullOrEmpty(me.Username))
                 {
@@ -72,10 +78,11 @@ namespace Mod_10
                                     offset = e.Id + 1;
                                     if (e.Message.Text != null)
                                     {
-                                        _window.Dispatcher.Invoke(() =>
-                                        {
-                                            readMessage.MessageLog(e.Message.Text, e.Message.Chat.FirstName, e.Message.Chat.Id);
-                                        });
+                                        //_window.Dispatcher.Invoke(() =>
+                                        //{
+                                        //    readMessage.MessageLog(this, e);
+                                           
+                                        //});
                                     }
                                 }
                             }
@@ -83,6 +90,7 @@ namespace Mod_10
                         catch (Exception ex) { Console.WriteLine(ex.Message); }
                         Thread.Sleep(1000);
                     }
+                    _client.StopReceiving();
                 }
             });
         }

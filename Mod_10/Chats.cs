@@ -8,14 +8,14 @@ namespace Mod_10
 {
     public class Chats
     {
-        public Chats(long id, string name, string text, DateTime date)
+        public Chats(long id, string name, string text, string date)
         {
             this.id = id;
             this.name = name;
             this.messageCollection = new List<Message>();
             Write(text, date);
         }
-        public void Write(string text, DateTime date)
+        public void Write(string text, string date)
         {
             messageCollection.Add(new Message(text, date));
         }
@@ -29,16 +29,16 @@ namespace Mod_10
     }
     public class Message
     {
-        public Message(string text, DateTime date)
+        public Message(string text, string date)
         {
             this.text = text;
             this.date = date;
         }
 
         public string Text { get { return this.text; } set { this.text = value; } }
-        public DateTime Date { get { return this.date; } set { this.date = value; } }
+        public string Date { get { return this.date; } set { this.date = value; } }
 
         private string text;
-        private DateTime date;
+        private string date;
     }
 }
