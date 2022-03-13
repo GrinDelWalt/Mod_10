@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -37,11 +38,32 @@ namespace Mod_10
                 hlp.GetUpdates();
             }
             catch (Exception ex) { Debug.WriteLine(ex.Message); }
-
+            
         }
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
         {
 
         }
+
+        private void logList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            var log = logList.SelectedItems;
+            List<string> itemList = new List<string>();
+            foreach (var item in log)
+            {
+                itemList.Add(Convert.ToString(item));
+            }
+            //var logAp = log.ToString
+            //List<string> items = new List<string>();
+
+            //while (logAp.MoveNext())
+            //{
+            //    string item = Convert.ToString(logAp.Current);
+            //    items.Add(item);
+            //}
+        }
+        
+        
     }
 }
