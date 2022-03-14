@@ -28,16 +28,6 @@ namespace Mod_10
             Chats = new ObservableCollection<Chats>();
 
         }
-        public void StartBot()
-        {
-            
-        }
-        //public void Data(string name, string msg, long id)
-        //{
-        //    this.name = name;
-        //    this.e.Message.Text = msg;
-        //    this.e.Message.Chat.Id = id;
-        //}
         /// <summary>
         /// Read Message
         /// </summary>
@@ -59,7 +49,7 @@ namespace Mod_10
                 Chats chat = Chats.FirstOrDefault(x => x.Id == e.Message.Chat.Id);
                 if (chat != null)
                 {
-                    chat.MessageCollection.Add(new Message(e.Message.Text, date));
+                    chat.MessageCollection.Add(new Message(e.Message.Text, date, e.Message.Chat.FirstName));
                 }
                 else
                 {

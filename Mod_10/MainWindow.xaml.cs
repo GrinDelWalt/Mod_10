@@ -24,8 +24,8 @@ namespace Mod_10
     /// </summary>
     public partial class MainWindow : Window
     {
-        ReadMessage read;
-
+        public ReadMessage read;
+        
 
         public MainWindow()
         {
@@ -47,23 +47,10 @@ namespace Mod_10
 
         private void logList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            long id = Convert.ToInt64(idBox.Text);
 
-            var log = logList.SelectedItems;
-            List<string> itemList = new List<string>();
-            foreach (var item in log)
-            {
-                itemList.Add(Convert.ToString(item));
-            }
-            //var logAp = log.ToString
-            //List<string> items = new List<string>();
-
-            //while (logAp.MoveNext())
-            //{
-            //    string item = Convert.ToString(logAp.Current);
-            //    items.Add(item);
-            //}
+            Chats chat = read.Chats.FirstOrDefault(x => x.Id == id);
+            chatBox.ItemsSource = chat.MessageCollection;
         }
-        
-        
     }
 }

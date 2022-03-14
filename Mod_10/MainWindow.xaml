@@ -39,7 +39,7 @@
                  Grid.RowSpan="1"
                  Width="190" 
                  SelectionChanged="logList_SelectionChanged"
-                 SelectedItem="Id"
+                 
                  >
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -54,7 +54,10 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListView Margin="205,36,10,61" RenderTransformOrigin="0.5,0.5">
+
+        <ListView x:Name="chatBox"
+                  Margin="205,36,10,61"
+                  RenderTransformOrigin="0.5,0.5">
             <ListView.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -65,9 +68,16 @@
             </ListView.RenderTransform>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Name}"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Text}"/>
                 </GridView>
             </ListView.View>
+            <TextBox x:Name="idBox"
+                     Height="23"
+                     TextWrapping="Wrap"
+                     Width="120"
+                     Text="{Binding ElementName=logList, Path=SelectedItem.Id}"
+                     Visibility="Collapsed"/>
         </ListView>
 
 
