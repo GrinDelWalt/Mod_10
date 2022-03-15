@@ -48,7 +48,7 @@ namespace Mod_10
         private void logList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             long id = Convert.ToInt64(idBox.Text);
-
+            
             Chats chat = read.Chats.FirstOrDefault(x => x.Id == id);
             chatBox.ItemsSource = chat.MessageCollection;
         }

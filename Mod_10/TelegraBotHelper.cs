@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -87,7 +88,7 @@ namespace Mod_10
                                 }
                             }
                         }
-                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        catch (Exception ex) { Debug.WriteLine(ex.Message); }
                         Thread.Sleep(1000);
                     }
                     _client.StopReceiving();
