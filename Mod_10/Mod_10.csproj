@@ -84,7 +84,7 @@
     </ApplicationDefinition>
     <Compile Include="Button.cs" />
     <Compile Include="Download.cs" />
-    <Compile Include="ReadMessage.cs" />
+    <Compile Include="MessageReader.cs" />
     <Compile Include="TelegraBotHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -1,40 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
+using Telegram.Bot.Args;
 
 namespace Mod_10
 {
-    public class ReadMessage
+    public class MessageReader
     {
-        public ObservableCollection<Chats> Chats { get; set; }
+        private ListBox _logList;
 
-        object sender;
-        Telegram.Bot.Args.MessageEventArgs e;
-        ListBox logList;
-        public MainWindow _window;
+        private MainWindow _window;
+
+        public ObservableCollection<Chats> Chats { get; set; }
 
         public ObservableCollection<Message> messages { get; set; }
 
-        public ReadMessage(ListBox logList, MainWindow window)
+        public MessageReader(ListBox logList, MainWindow window)
         {
-            this.logList = logList;
-            this._window = window;
+            _logList = logList;
+            _window = window;
             Chats = new ObservableCollection<Chats>();
 
         }
+
         /// <summary>
         /// Read Message
         /// </summary>
-        /// <param name="messageText">Text</param>
-        /// <param name="name">Name</param>
-        /// <param name="id">Id</param>
-        public void MessageLog(object sender, Telegram.Bot.Args.MessageEventArgs e)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void MessageLog(object sender, MessageEventArgs e)
         {
             Debug.WriteLine("----");
             string text = $"{DateTime.Now.ToLongTimeString()}: {e.Message.Chat.Id} {e.Message.Chat.FirstName} {e.Message.Text}";
@@ -45,8 +41,8 @@ namespace Mod_10
 
             _window.Dispatcher.Invoke(() =>
             {
-
                 Chats chat = Chats.FirstOrDefault(x => x.Id == e.Message.Chat.Id);
+
                 if (chat != null)
                 {
                     chat.MessageCollection.Add(new Message(e.Message.Text, date, e.Message.Chat.FirstName));
@@ -55,7 +51,8 @@ namespace Mod_10
                 {
                     Chats.Add(new Chats(e.Message.Chat.Id, e.Message.Chat.FirstName, e.Message.Text, date));
                 }
-                logList.ItemsSource = Chats;
+
+                _logList.ItemsSource = Chats;
             });
         }
 

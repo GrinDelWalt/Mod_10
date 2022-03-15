@@ -2,20 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Telegram.Bot;
-using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Mod_10
 {
     public class TelegraBotHelper
     {
         public MainWindow _window;
-        public ReadMessage readMessage;
+        public MessageReader _messageReader;
+
         public Telegram.Bot.Types.Update e;
         IEnumerable<IGrouping<string, FileInfo>> queryGroupByExt;
 
@@ -29,19 +27,22 @@ namespace Mod_10
 
         string path;
 
-        public Telegram.Bot.TelegramBotClient _client;
+        public TelegramBotClient _client;
+
         private readonly string _token;
+
         /// <summary>
         /// токен
         /// </summary>
         /// <param name="token"></param>
         public TelegraBotHelper(ListBox logList, MainWindow window)
         {
-            this._window = window;
-            readMessage = new ReadMessage(logList, _window);
+            _window = window;
+            _token = File.ReadAllText(Environment.CurrentDirectory + @"\Token_bot.txt");
+
+            _messageReader = new MessageReader(logList, _window);
+
             button = new Button();
-            this._token = File.ReadAllText(Environment.CurrentDirectory + @"\Token_bot.txt");
-            
         }
 
         /// <summary>
@@ -49,50 +50,71 @@ namespace Mod_10
         /// </summary>
         internal async void GetUpdates()
         {
-            _client = new Telegram.Bot.TelegramBotClient(_token);
-            _client.OnMessage += readMessage.MessageLog;
-            _client.StartReceiving();
-            await Task.Run(() =>
-            {
-                if (path == null)
-                {
-                    path = Environment.CurrentDirectory;
-                    Directory.CreateDirectory(path + "\\File\\");
-                }
+            //_client = new Telegram.Bot.TelegramBotClient(_token);
+            //_client.OnMessage += readMessage.MessageLog;
+            //_client.StartReceiving();
+
+            
+            //await Task.Run(() =>
+            //{
+            //    if (path == null)
+            //    {
+            //        path = Environment.CurrentDirectory;
+            //        Directory.CreateDirectory(path + "\\File\\");
+            //    }
                
-                var me = _client.GetMeAsync().Result;
-                if (me != null && !string.IsNullOrEmpty(me.Username))
-                {
-                    int offset = 0;
-                    while (true)
-                    {
-                        try
-                        {
-                            var updates = _client.GetUpdatesAsync(offset).Result;
-                            if (updates != null && updates.Count() > 0)
-                            {
-                                foreach (var e in updates)
-                                {
-                                    this.e = e;
-                                    MessageReader();
-                                    offset = e.Id + 1;
-                                    if (e.Message.Text != null)
-                                    {
-                                        //_window.Dispatcher.Invoke(() =>
-                                        //{
-                                        //    readMessage.MessageLog(this, e);
+            //    var me = _client.GetMeAsync().Result;
+            //    if (me != null && !string.IsNullOrEmpty(me.Username))
+            //    {
+            //        int offset = 0;
+            //        while (true)
+            //        {
+            //            try
+            //            {
+            //                var updates = _client.GetUpdatesAsync(offset).Result;
+            //                if (updates != null && updates.Count() > 0)
+            //                {
+            //                    foreach (var e in updates)
+            //                    {
+            //                        this.e = e;
+            //                        MessageReader();
+            //                        offset = e.Id + 1;
+            //                        if (e.Message.Text != null)
+            //                        {
+            //                            //_window.Dispatcher.Invoke(() =>
+            //                            //{
+            //                            //    readMessage.MessageLog(this, e);
                                            
-                                        //});
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception ex) { Console.WriteLine(ex.Message); }
-                        Thread.Sleep(1000);
-                    }
-                    _client.StopReceiving();
-                }
-            });
+            //                            //});
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            //            Thread.Sleep(1000);
+            //        }
+            //        _client.StopReceiving();
+            //    }
+            //});
+            
+        }
+
+        public void StartBot()
+        {
+            _client = new TelegramBotClient(_token);
+            _client.OnMessage += _messageReader.MessageLog;
+            _client.StartReceiving();
+
+            string inputConsoleText;
+
+            Console.WriteLine("Enter \"exit\" to exit");
+            do
+            {
+                inputConsoleText = Console.ReadLine();
+            }
+            while (inputConsoleText != "exit");
+
+            _client.StopReceiving();
         }
 
         /// <summary>
