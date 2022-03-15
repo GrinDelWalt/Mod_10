@@ -10,10 +10,6 @@
         Height="450"
         Width="800" Closing="Window_Closing">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="701*"/>
-            <ColumnDefinition Width="91*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
@@ -76,14 +72,14 @@
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Text}"/>
                 </GridView>
             </ListView.View>
-            <TextBox x:Name="idBox"
+            
+        </ListView>
+        <TextBox x:Name="idBox"
                      Height="23"
                      TextWrapping="Wrap"
                      Width="120"
                      Text="{Binding ElementName=logList, Path=SelectedItem.Id}"
                      Visibility="Collapsed"/>
-        </ListView>
-
 
     </Grid>
 </Window>

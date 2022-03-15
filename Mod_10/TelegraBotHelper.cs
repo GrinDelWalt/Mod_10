@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Telegram.Bot;
 
@@ -97,11 +99,36 @@ namespace Mod_10
             
         }
 
-        public void StartBot()
+        public async void StartBot()
         {
             _client = new TelegramBotClient(_token);
             _client.OnMessage += _messageReader.MessageLog;
             _client.StartReceiving();
+            Telegram.Bot.Args.MessageEventArgs ex;
+            _window.Dispatcher.Invoke(() =>
+            {
+                int offset = 0;
+                while (true)
+                {
+                    try
+                    {
+                        var updates = _client.GetUpdatesAsync(offset).Result;
+                        if (updates != null && updates.Count() > 0)
+                        {
+                            foreach (var e in updates)
+                            {
+                                
+                                MessageReader();
+                                offset = e.Id + 1;
+
+                            }
+                        }
+                    }
+                    catch (System.AggregateException e) { Console.WriteLine(e.Message); }
+                    Thread.Sleep(1000);
+                }
+            });
+
         }
 
         public void StopBot()
