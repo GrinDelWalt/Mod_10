@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,8 +11,8 @@ namespace Mod_10
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MessageReader read;
-        
+        private TelegraBotHelper _hlp;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -24,15 +21,20 @@ namespace Mod_10
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                TelegraBotHelper hlp = new TelegraBotHelper(logList, this);
-                //hlp.GetUpdates();
-                hlp.StartBot();
+                _hlp = new TelegraBotHelper(logList, this);
+                _hlp.StartBot();
             }
             catch (Exception ex) 
             {
                 Debug.WriteLine(ex.Message); 
             }
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _hlp.StopBot();
+        }
+
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
         {
 
@@ -40,10 +42,10 @@ namespace Mod_10
 
         private void logList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            long id = Convert.ToInt64(idBox.Text);
+            //long id = Convert.ToInt64(idBox.Text);
 
-            Chats chat = read.Chats.FirstOrDefault(x => x.Id == id);
-            chatBox.ItemsSource = chat.MessageCollection;
+            //Chats chat = read.Chats.FirstOrDefault(x => x.Id == id);
+            //chatBox.ItemsSource = chat.MessageCollection;
         }
     }
 }

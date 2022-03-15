@@ -13,7 +13,7 @@ namespace Mod_10
 
         private MainWindow _window;
 
-        public ObservableCollection<Chats> Chats { get; set; }
+        public ObservableCollection<Chat> Chats { get; set; }
 
         public ObservableCollection<Message> messages { get; set; }
 
@@ -21,7 +21,7 @@ namespace Mod_10
         {
             _logList = logList;
             _window = window;
-            Chats = new ObservableCollection<Chats>();
+            Chats = new ObservableCollection<Chat>();
 
         }
 
@@ -41,15 +41,19 @@ namespace Mod_10
 
             _window.Dispatcher.Invoke(() =>
             {
-                Chats chat = Chats.FirstOrDefault(x => x.Id == e.Message.Chat.Id);
+                Chat chat = Chats.FirstOrDefault(x => x.Id == e.Message.Chat.Id);
+                int index = Chats.IndexOf(chat);
 
                 if (chat != null)
                 {
                     chat.MessageCollection.Add(new Message(e.Message.Text, date, e.Message.Chat.FirstName));
+                    Chats[index] = chat;
                 }
                 else
                 {
-                    Chats.Add(new Chats(e.Message.Chat.Id, e.Message.Chat.FirstName, e.Message.Text, date));
+                    Chat newChat = new Chat(e.Message.Chat.Id, e.Message.Chat.FirstName);
+                    newChat.Write(e.Message.Text, date);
+                    Chats.Add(newChat);
                 }
 
                 _logList.ItemsSource = Chats;

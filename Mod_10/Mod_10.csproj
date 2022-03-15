@@ -84,6 +84,7 @@
     </ApplicationDefinition>
     <Compile Include="Button.cs" />
     <Compile Include="Download.cs" />
+    <Compile Include="Message.cs" />
     <Compile Include="MessageReader.cs" />
     <Compile Include="TelegraBotHelper.cs" />
     <Page Include="MainWindow.xaml">
@@ -94,7 +95,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Chats.cs" />
+    <Compile Include="Chat.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

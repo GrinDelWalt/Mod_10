@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using Telegram.Bot;
 
@@ -104,16 +102,10 @@ namespace Mod_10
             _client = new TelegramBotClient(_token);
             _client.OnMessage += _messageReader.MessageLog;
             _client.StartReceiving();
+        }
 
-            string inputConsoleText;
-
-            Console.WriteLine("Enter \"exit\" to exit");
-            do
-            {
-                inputConsoleText = Console.ReadLine();
-            }
-            while (inputConsoleText != "exit");
-
+        public void StopBot()
+        {
             _client.StopReceiving();
         }
 

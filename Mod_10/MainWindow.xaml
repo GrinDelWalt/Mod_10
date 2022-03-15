@@ -8,20 +8,24 @@
         MinWidth="500"
         MinHeight="300"
         Height="450"
-        Width="800">
+        Width="800" Closing="Window_Closing">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="701*"/>
+            <ColumnDefinition Width="91*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBox x:Name="messeg" Margin="205,0,90,10"
                  TextWrapping="Wrap"
-                 Text="TextBox" Height="46" VerticalAlignment="Bottom"/>
+                 Text="TextBox" Height="46" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
         <Button x:Name="ButtonMessegePush"
                 Content="Massege"
                 HorizontalAlignment="Right"
                 Margin="0,0,10,11"
                 VerticalAlignment="Bottom"
-                Width="75" Click="ButtonMessegePush_Click" Height="22"/>
+                Width="75" Click="ButtonMessegePush_Click" Height="22" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left"
                    Margin="10,10,0,0"
                    TextWrapping="Wrap"
@@ -57,7 +61,7 @@
 
         <ListView x:Name="chatBox"
                   Margin="205,36,10,61"
-                  RenderTransformOrigin="0.5,0.5">
+                  RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2">
             <ListView.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
