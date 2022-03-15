@@ -110,6 +110,16 @@ namespace Mod_10
         }
 
         /// <summary>
+        /// Get message collection
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<Message> GetMessageCollection(long id)
+        {
+            return _messageReader.GetMessageCollection(id);
+        }
+
+        /// <summary>
         /// определения типа входных данных
         /// </summary>
         private async void MessageReader()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -60,5 +61,15 @@ namespace Mod_10
             });
         }
 
+        /// <summary>
+        /// Get message collection
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<Message> GetMessageCollection(long id)
+        {
+            Chat chat = Chats.FirstOrDefault(x => x.Id == id);
+            return chat.MessageCollection;
+        }
     }
 }
