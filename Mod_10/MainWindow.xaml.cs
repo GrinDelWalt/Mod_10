@@ -11,7 +11,7 @@ namespace Mod_10
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TelegraBotHelper _hlp;
+        private TelegramBot _bot;
 
         public MainWindow()
         {
@@ -21,18 +21,18 @@ namespace Mod_10
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                _hlp = new TelegraBotHelper(logList, this);
-                _hlp.StartBot();
+                _bot = new TelegramBot(this);
+                _bot.StartBot();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message); 
+                Debug.WriteLine(ex.Message);
             }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _hlp.StopBot();
+            _bot.StopBot();
         }
 
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
@@ -43,7 +43,7 @@ namespace Mod_10
         private void logList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             long id = Convert.ToInt64(idBox.Text);
-            chatBox.ItemsSource = _hlp.GetMessageCollection(id);
+            chatBox.ItemsSource = _bot.GetMessageCollection(id);
         }
     }
 }

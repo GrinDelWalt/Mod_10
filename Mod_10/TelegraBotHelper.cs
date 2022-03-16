@@ -12,7 +12,7 @@ namespace Mod_10
     public class TelegraBotHelper
     {
         public MainWindow _window;
-        public MessageReader _messageReader;
+
 
         public Telegram.Bot.Types.Update e;
         IEnumerable<IGrouping<string, FileInfo>> queryGroupByExt;
@@ -35,13 +35,10 @@ namespace Mod_10
         /// токен
         /// </summary>
         /// <param name="token"></param>
-        public TelegraBotHelper(ListBox logList, MainWindow window)
+        public TelegraBotHelper(MainWindow window)
         {
             _window = window;
             _token = File.ReadAllText(Environment.CurrentDirectory + @"\Token_bot.txt");
-
-            _messageReader = new MessageReader(logList, _window);
-
             button = new Button();
         }
 
@@ -50,90 +47,41 @@ namespace Mod_10
         /// </summary>
         internal async void GetUpdates()
         {
-            //_client = new Telegram.Bot.TelegramBotClient(_token);
-            //_client.OnMessage += readMessage.MessageLog;
-            //_client.StartReceiving();
 
-            
-            //await Task.Run(() =>
-            //{
-            //    if (path == null)
-            //    {
-            //        path = Environment.CurrentDirectory;
-            //        Directory.CreateDirectory(path + "\\File\\");
-            //    }
-               
-            //    var me = _client.GetMeAsync().Result;
-            //    if (me != null && !string.IsNullOrEmpty(me.Username))
-            //    {
-            //        int offset = 0;
-            //        while (true)
-            //        {
-            //            try
-            //            {
-            //                var updates = _client.GetUpdatesAsync(offset).Result;
-            //                if (updates != null && updates.Count() > 0)
-            //                {
-            //                    foreach (var e in updates)
-            //                    {
-            //                        this.e = e;
-            //                        MessageReader();
-            //                        offset = e.Id + 1;
-            //                        if (e.Message.Text != null)
-            //                        {
-            //                            //_window.Dispatcher.Invoke(() =>
-            //                            //{
-            //                            //    readMessage.MessageLog(this, e);
-                                           
-            //                            //});
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //            catch (Exception ex) { Console.WriteLine(ex.Message); }
-            //            Thread.Sleep(1000);
-            //        }
-            //        _client.StopReceiving();
-            //    }
-            //});
-            
-        }
-
-        public async void StartBot()
-        {
-            _client = new TelegramBotClient(_token);
-            _client.OnMessage += _messageReader.MessageLog;
-            _client.StartReceiving();
-            Telegram.Bot.Args.MessageEventArgs ex;
-            _window.Dispatcher.Invoke(() =>
+            await Task.Run(() =>
             {
-                int offset = 0;
-                while (true)
+                if (path == null)
                 {
-                    try
-                    {
-                        var updates = _client.GetUpdatesAsync(offset).Result;
-                        if (updates != null && updates.Count() > 0)
-                        {
-                            foreach (var e in updates)
-                            {
-                                
-                                MessageReader();
-                                offset = e.Id + 1;
+                    path = Environment.CurrentDirectory;
+                    Directory.CreateDirectory(path + "\\File\\");
+                }
 
+                var me = _client.GetMeAsync().Result;
+                if (me != null && !string.IsNullOrEmpty(me.Username))
+                {
+                    int offset = 0;
+                    while (true)
+                    {
+                        try
+                        {
+                            var updates = _client.GetUpdatesAsync(offset).Result;
+                            if (updates != null && updates.Count() > 0)
+                            {
+                                foreach (var e in updates)
+                                {
+                                    this.e = e;
+                                    MessageReader();
+                                    offset = e.Id + 1;
+
+                                }
                             }
                         }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        Thread.Sleep(1000);
                     }
-                    catch (System.AggregateException e) { Console.WriteLine(e.Message); }
-                    Thread.Sleep(1000);
                 }
             });
 
-        }
-
-        public void StopBot()
-        {
-            _client.StopReceiving();
         }
 
         /// <summary>
@@ -141,10 +89,7 @@ namespace Mod_10
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<Message> GetMessageCollection(long id)
-        {
-            return _messageReader.GetMessageCollection(id);
-        }
+
 
         /// <summary>
         /// определения типа входных данных
