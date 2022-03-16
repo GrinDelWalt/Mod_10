@@ -56,6 +56,7 @@ namespace Mod_10
                     Directory.CreateDirectory(path + "\\File\\");
                 }
 
+                _client = new Telegram.Bot.TelegramBotClient(_token);
                 var me = _client.GetMeAsync().Result;
                 if (me != null && !string.IsNullOrEmpty(me.Username))
                 {
@@ -72,7 +73,6 @@ namespace Mod_10
                                     this.e = e;
                                     MessageReader();
                                     offset = e.Id + 1;
-
                                 }
                             }
                         }

@@ -26,6 +26,7 @@ namespace Mod_10
             _window = window;
             Chats = new ObservableCollection<Chat>();
             _hlp = new TelegraBotHelper(window);
+            _hlp.GetUpdates();
         }
 
         /// <summary>
