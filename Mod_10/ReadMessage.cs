@@ -54,7 +54,7 @@ namespace Mod_10
                 Chats chat = Chats.FirstOrDefault(x => x.Id == e.Message.Chat.Id);
                 if (chat != null)
                 {
-                    chat.MessageCollection.Add(new Message(e.Message.Text, date, e.Message.Chat.FirstName));
+                    chat.MessageCollection.Add(new Message(e.Message.Text, date, chat.Name));
                 }
                 else
                 {

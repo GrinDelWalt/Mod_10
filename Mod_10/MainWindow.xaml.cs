@@ -49,7 +49,8 @@ namespace Mod_10
         {
             long id = Convert.ToInt64(idBox.Text);
 
-            read.WriteChat(id);
+            Chats chat = read.Chats.FirstOrDefault(x => x.Id == id);
+            chatBox.ItemsSource = chat.MessageCollection;
         }
     }
 }
