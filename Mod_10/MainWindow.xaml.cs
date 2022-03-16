@@ -29,12 +29,12 @@ namespace Mod_10
 
         public MainWindow()
         {
-            InitializeComponent();
+            
             try
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                TelegraBotHelper hlp = new TelegraBotHelper(logList, this);
+                TelegraBotHelper hlp = new TelegraBotHelper(this);
                 hlp.GetUpdates();
             }
             catch (Exception ex) { Debug.WriteLine(ex.Message); }
@@ -49,8 +49,7 @@ namespace Mod_10
         {
             long id = Convert.ToInt64(idBox.Text);
 
-            Chats chat = read.Chats.FirstOrDefault(x => x.Id == id);
-            chatBox.ItemsSource = chat.MessageCollection;
+            read.WriteChat(id);
         }
     }
 }

@@ -12,7 +12,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Mod_10
 {
-    public class TelegraBotHelper
+    public class TelegraBotHelper : ReadMessage
     {
         public MainWindow _window;
         public ReadMessage readMessage;
@@ -35,10 +35,10 @@ namespace Mod_10
         /// токен
         /// </summary>
         /// <param name="token"></param>
-        public TelegraBotHelper(ListBox logList, MainWindow window)
+        public TelegraBotHelper(MainWindow window)
         {
             this._window = window;
-            readMessage = new ReadMessage(logList, _window);
+            readMessage = new ReadMessage(_window);
             button = new Button();
             this._token = File.ReadAllText(Environment.CurrentDirectory + @"\Token_bot.txt");
             

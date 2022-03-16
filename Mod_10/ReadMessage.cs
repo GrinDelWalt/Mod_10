@@ -10,23 +10,28 @@ using System.Windows.Controls;
 
 namespace Mod_10
 {
-    public class ReadMessage
+    public class ReadMessage : MainWindow
     {
         public ObservableCollection<Chats> Chats { get; set; }
 
         object sender;
         Telegram.Bot.Args.MessageEventArgs e;
-        ListBox logList;
+        
         public MainWindow _window;
 
         public ObservableCollection<Message> messages { get; set; }
 
-        public ReadMessage(ListBox logList, MainWindow window)
+        public ReadMessage(MainWindow window)
         {
-            this.logList = logList;
+            
             this._window = window;
             Chats = new ObservableCollection<Chats>();
 
+        }
+        public void WriteChat(long id)
+        {
+            Chats chat = read.Chats.FirstOrDefault(x => x.Id == id);
+            chatBox.ItemsSource = chat.MessageCollection;
         }
         /// <summary>
         /// Read Message
