@@ -66,15 +66,15 @@ namespace Mod_10
                         try
                         {
                             var updates = _client.GetUpdatesAsync(offset).Result;
-                            if (updates != null && updates.Count() > 0)
-                            {
-                                foreach (var e in updates)
-                                {
-                                    this.e = e;
-                                    MessageReader();
-                                    offset = e.Id + 1;
-                                }
-                            }
+                            //if (updates != null && updates.Count() > 0)
+                            //{
+                            //    foreach (var e in updates)
+                            //    {
+                            //        this.e = e;
+                            //        MessageReader();
+                            //        offset = e.Id + 1;
+                            //    }
+                            //}
                         }
                         catch (Exception ex) { Console.WriteLine(ex.Message); }
                         Thread.Sleep(1000);

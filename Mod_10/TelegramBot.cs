@@ -23,12 +23,12 @@ namespace Mod_10
             _window = window;
             _messageReader = new MessageReader(_window, logList);
         }
-        public async void StartBot()
+        public void StartBot()
         {
             _client = new TelegramBotClient(_token);
             _client.OnMessage += _messageReader.MessageLog;
             _client.StartReceiving();
-
+            
         }
         public void StopBot()
         {
