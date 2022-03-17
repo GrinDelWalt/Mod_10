@@ -17,11 +17,11 @@ namespace Mod_10
         public TelegramBotClient _client;
         private string _token;
 
-        public TelegramBot(MainWindow window)
+        public TelegramBot(MainWindow window, ListBox logList)
         {
             _token = File.ReadAllText(Environment.CurrentDirectory + @"\Token_bot.txt");
             _window = window;
-            _messageReader = new MessageReader(_window);
+            _messageReader = new MessageReader(_window, logList);
         }
         public async void StartBot()
         {

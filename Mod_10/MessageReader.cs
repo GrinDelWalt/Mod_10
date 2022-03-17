@@ -20,12 +20,13 @@ namespace Mod_10
 
         public ObservableCollection<Message> messages { get; set; }
 
-        public MessageReader(MainWindow window)
+        public MessageReader(MainWindow window, ListBox logList)
         {
             //_logList = logList;
             _window = window;
             Chats = new ObservableCollection<Chat>();
             _hlp = new TelegraBotHelper(window);
+            _logList = logList;
             _hlp.GetUpdates();
         }
 
@@ -60,7 +61,7 @@ namespace Mod_10
                     Chats.Add(newChat);
                 }
 
-                //_logList.ItemsSource = Chats;
+                _logList.ItemsSource = Chats;
             });
         }
 

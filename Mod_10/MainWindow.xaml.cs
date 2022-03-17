@@ -21,13 +21,14 @@ namespace Mod_10
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                _bot = new TelegramBot(this);
+                _bot = new TelegramBot(this, logList);
                 _bot.StartBot();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
+            
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
