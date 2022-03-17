@@ -11,40 +11,34 @@ namespace Mod_10
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TelegramBot _bot;
+        //private TelegramBot _bot;
 
+        private TelegraBotHelper _hlp;
         public MainWindow()
         {
             InitializeComponent();
 
-            try
-            {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                _bot = new TelegramBot(this, logList);
-                _bot.StartBot();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            
+            _hlp = new TelegraBotHelper(this, logList);
+            _hlp.GetUpdates();
+
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _bot.StopBot();
+            //_bot.StopBot();
         }
 
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void logList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             long id = Convert.ToInt64(idBox.Text);
-            chatBox.ItemsSource = _bot.GetMessageCollection(id);
+            chatBox.ItemsSource = _hlp.GetMessageCollection(id);
         }
     }
 }

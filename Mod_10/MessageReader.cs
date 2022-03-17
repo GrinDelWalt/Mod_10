@@ -25,9 +25,9 @@ namespace Mod_10
             //_logList = logList;
             _window = window;
             Chats = new ObservableCollection<Chat>();
-            _hlp = new TelegraBotHelper(window);
+            //_hlp = new TelegraBotHelper(window, logList);
             _logList = logList;
-            _hlp.GetUpdates();
+            //_hlp.GetUpdates();
         }
 
         /// <summary>
@@ -35,29 +35,29 @@ namespace Mod_10
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void MessageLog(object sender, MessageEventArgs e)
+        public void MessageLog(long id, string name, string textMsg)
         {
             Debug.WriteLine("----");
-            string text = $"{DateTime.Now.ToLongTimeString()}: {e.Message.Chat.Id} {e.Message.Chat.FirstName} {e.Message.Text}";
+            string text = $"{DateTime.Now.ToLongTimeString()}: {id} {name} {textMsg}";
 
             Debug.WriteLine(text);
 
             string date = DateTime.Now.ToLongDateString();
-
+            
             _window.Dispatcher.Invoke(() =>
             {
-                Chat chat = Chats.FirstOrDefault(x => x.Id == e.Message.Chat.Id);
+                Chat chat = Chats.FirstOrDefault(x => x.Id == id);
                 int index = Chats.IndexOf(chat);
 
                 if (chat != null)
                 {
-                    chat.MessageCollection.Add(new Message(e.Message.Text, date, e.Message.Chat.FirstName));
+                    chat.MessageCollection.Add(new Message(textMsg, date, name));
                     Chats[index] = chat;
                 }
                 else
                 {
-                    Chat newChat = new Chat(e.Message.Chat.Id, e.Message.Chat.FirstName);
-                    newChat.Write(e.Message.Text, date);
+                    Chat newChat = new Chat(id, name);
+                    newChat.Write(textMsg, date);
                     Chats.Add(newChat);
                 }
 

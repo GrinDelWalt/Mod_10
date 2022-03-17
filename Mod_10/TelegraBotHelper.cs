@@ -13,6 +13,8 @@ namespace Mod_10
     {
         public MainWindow _window;
 
+        public MessageReader _messageReader;
+
 
         public Telegram.Bot.Types.Update e;
         IEnumerable<IGrouping<string, FileInfo>> queryGroupByExt;
@@ -35,11 +37,17 @@ namespace Mod_10
         /// токен
         /// </summary>
         /// <param name="token"></param>
-        public TelegraBotHelper(MainWindow window)
+        public TelegraBotHelper(MainWindow window, ListBox logList)
         {
             _window = window;
             _token = File.ReadAllText(Environment.CurrentDirectory + @"\Token_bot.txt");
             button = new Button();
+            _messageReader = new MessageReader(_window, logList);
+        }
+
+        public List<Message> GetMessageCollection(long id)
+        {
+            return _messageReader.GetMessageCollection(id);
         }
 
         /// <summary>
@@ -66,15 +74,19 @@ namespace Mod_10
                         try
                         {
                             var updates = _client.GetUpdatesAsync(offset).Result;
-                            //if (updates != null && updates.Count() > 0)
-                            //{
-                            //    foreach (var e in updates)
-                            //    {
-                            //        this.e = e;
-                            //        MessageReader();
-                            //        offset = e.Id + 1;
-                            //    }
-                            //}
+                            if (updates != null && updates.Count() > 0)
+                            {
+                                foreach (var e in updates)
+                                {
+                                    this.e = e;
+                                    MessageReader();
+                                    offset = e.Id + 1;
+                                    if (e.Message.Text != null)
+                                    {
+                                        _messageReader.MessageLog(e.Message.Chat.Id, e.Message.Chat.FirstName, e.Message.Text);
+                                    }
+                                }
+                            }
                         }
                         catch (Exception ex) { Console.WriteLine(ex.Message); }
                         Thread.Sleep(1000);

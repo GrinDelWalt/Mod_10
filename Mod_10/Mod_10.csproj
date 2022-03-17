@@ -83,7 +83,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Button.cs" />
-    <Compile Include="TelegramBot.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageReader.cs" />
