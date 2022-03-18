@@ -49,6 +49,14 @@ namespace Mod_10
         {
             return _messageReader.GetMessageCollection(id);
         }
+        public async void PushBotMessageAdmin(string text, long id)
+        {
+            await _client.SendTextMessageAsync(id, text);
+        }
+        public void PushCollectionAdmin(string text, long id)
+        {
+            _messageReader.MessageLog(id, "Admin", text);
+        }
 
         /// <summary>
         /// проверка на наличие новых данных + Timeout

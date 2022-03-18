@@ -11,9 +11,9 @@ namespace Mod_10
     /// </summary>
     public partial class MainWindow : Window
     {
-        //private TelegramBot _bot;
-
         private TelegraBotHelper _hlp;
+
+        private long id;
         public MainWindow()
         {
             InitializeComponent();
@@ -25,10 +25,6 @@ namespace Mod_10
 
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            //_bot.StopBot();
-        }
 
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
         {
@@ -37,8 +33,23 @@ namespace Mod_10
 
         private void logList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            long id = Convert.ToInt64(idBox.Text);
+            if (idBox.Text != "")
+            {
+                id = Convert.ToInt64(idBox.Text);
+            }
             chatBox.ItemsSource = _hlp.GetMessageCollection(id);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string text = messageAdmin.Text;
+           
+            if (idBox.Text != "")
+            {
+                _hlp.PushBotMessageAdmin(text, id);
+                _hlp.PushCollectionAdmin(text, id);
+            }
+            
         }
     }
 }

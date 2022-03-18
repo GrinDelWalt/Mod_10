@@ -22,12 +22,9 @@ namespace Mod_10
 
         public MessageReader(MainWindow window, ListBox logList)
         {
-            //_logList = logList;
             _window = window;
             Chats = new ObservableCollection<Chat>();
-            //_hlp = new TelegraBotHelper(window, logList);
             _logList = logList;
-            //_hlp.GetUpdates();
         }
 
         /// <summary>
