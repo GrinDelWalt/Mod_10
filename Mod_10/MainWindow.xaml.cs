@@ -42,7 +42,7 @@ namespace Mod_10
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string text = messageAdmin.Text;
+            string text = messageAdminBox.Text;
            
             if (idBox.Text != "")
             {

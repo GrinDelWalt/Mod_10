@@ -89,7 +89,7 @@ namespace Mod_10
                                     this.e = e;
                                     MessageReader();
                                     offset = e.Id + 1;
-                                    if (e.Message.Text != null)
+                                    if (e.Message != null)
                                     {
                                         _messageReader.MessageLog(e.Message.Chat.Id, e.Message.Chat.FirstName, e.Message.Text);
                                     }
