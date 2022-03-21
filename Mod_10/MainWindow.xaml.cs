@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,13 +25,10 @@ namespace Mod_10
             _hlp.GetUpdates();
 
         }
-
-
         private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
         {
             
         }
-
         private void logList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (idBox.Text != "")
@@ -39,15 +37,16 @@ namespace Mod_10
             }
             chatBox.ItemsSource = _hlp.GetMessageCollection(id);
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string text = messageAdmin.Text;
            
-            if (idBox.Text != "")
+            if (text != "")
             {
                 _hlp.PushBotMessageAdmin(text, id);
                 _hlp.PushCollectionAdmin(text, id);
+                ObservableCollection<Message> listMessage = _hlp.ListPull();
+                chatBox.ItemsSource = listMessage;
             }
             
         }

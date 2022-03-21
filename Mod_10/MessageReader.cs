@@ -26,7 +26,6 @@ namespace Mod_10
             Chats = new ObservableCollection<Chat>();
             _logList = logList;
         }
-
         /// <summary>
         /// Read Message
         /// </summary>
@@ -61,7 +60,6 @@ namespace Mod_10
                 _logList.ItemsSource = Chats;
             });
         }
-
         /// <summary>
         /// Get message collection
         /// </summary>
@@ -71,6 +69,10 @@ namespace Mod_10
         {
             Chat chat = Chats.FirstOrDefault(x => x.Id == id);
             return chat.MessageCollection;
+        }
+        public ObservableCollection<Message> PullMessage()
+        {
+            return messages;
         }
     }
 }
