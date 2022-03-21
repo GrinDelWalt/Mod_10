@@ -45,25 +45,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <ListView x:Name="chatBox"
-                  Margin="205,36,10,0"
-                  RenderTransformOrigin="0.5,0.5" Height="111" VerticalAlignment="Top">
-            <ListView.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleY="-0.099"/>
-                    <RotateTransform/>
-                    <TranslateTransform Y="0.498"/>
-                </TransformGroup>
-            </ListView.RenderTransform>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Name}"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Text}"/>
-                </GridView>
-            </ListView.View>
 
-        </ListView>
         <TextBox x:Name="idBox"
                   Height="23"
                   TextWrapping="Wrap"
@@ -71,20 +53,18 @@
                   Text="{Binding ElementName=logList, Path=SelectedItem.Id}"
                   Visibility="Collapsed"/>
         <ListBox x:Name="chatList"
-                 HorizontalAlignment="Left"
-                 Height="185"
-                 Margin="205,156,0,0"
-                 VerticalAlignment="Top"
-                 Width="577">
+                 Margin="205,36,12,80">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="Blue"
-                            Margin="5"
+                    <Border BorderBrush="#FF369C48"
+                            Margin="0"
                             BorderThickness="2"
-                            CornerRadius="5">
+                            CornerRadius="20" 
+                            Background="#FF369C48">
+
                         <StackPanel Margin="10">
-                            <TextBlock Text="{Binding Text}" Margin="0" FontSize="10"/>
-                            <TextBlock Text="{Binding Date}" Margin="0" FontSize="5" Foreground="Gray" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding Text}" Margin="0" FontSize="15"/>
+                            <TextBlock Text="{Binding Date}" Margin="0" FontSize="10" Foreground="Black" TextAlignment="Right"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>
@@ -92,18 +72,13 @@
         </ListBox>
         <Button x:Name="pushMessage"
                 Content="Button"
-                HorizontalAlignment="Left"
-                Margin="707,371,0,0"
-                VerticalAlignment="Top"
-                Width="75"
-                Click="Button_Click"/>
+                Margin="0,0,12,30"
+                VerticalAlignment="Bottom"
+                Click="Button_Click" HorizontalAlignment="Right" Width="75"
+                />
         <TextBox x:Name="messageAdminBox"
-                 HorizontalAlignment="Left"
-                 Height="63"
-                 Margin="205,346,0,0"
-                 TextWrapping="Wrap"
-                 VerticalAlignment="Top"
-                 Width="497"/>
+                 Margin="205,0,92,12"
+                 TextWrapping="Wrap" Height="63" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>

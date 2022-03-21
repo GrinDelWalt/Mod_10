@@ -35,7 +35,7 @@ namespace Mod_10
             {
                 id = Convert.ToInt64(idBox.Text);
             }
-            chatBox.ItemsSource = _hlp.GetMessageCollection(id);
+            chatList.ItemsSource = _hlp.GetMessageCollection(id);
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -45,10 +45,9 @@ namespace Mod_10
             {
                 _hlp.PushBotMessageAdmin(text, id);
                 _hlp.PushCollectionAdmin(text, id);
-                ObservableCollection<Message> listMessage = _hlp.ListPull();
-                chatBox.ItemsSource = listMessage;
+                chatList.ItemsSource = _hlp.ListPull();
             }
-            
+            messageAdminBox.Clear();
         }
     }
 }
