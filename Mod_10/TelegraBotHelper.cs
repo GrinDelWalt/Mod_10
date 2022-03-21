@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -11,25 +12,25 @@ namespace Mod_10
 {
     public class TelegraBotHelper
     {
-        public MainWindow _window;
+        private MainWindow _window;
 
-        public MessageReader _messageReader;
+        private MessageReader _messageReader;
 
 
-        public Telegram.Bot.Types.Update e;
+        private Telegram.Bot.Types.Update e;
         IEnumerable<IGrouping<string, FileInfo>> queryGroupByExt;
 
-        public string fileExtension;
-        public string filePath;
-        public string fileMessage;
+        private string fileExtension;
+        private string filePath;
+        private string fileMessage;
         private bool callback;
-        public ListBox _logList;
+        private ListBox _logList;
 
-        public Button button;
+        private Button button;
 
-        string path;
+        private string path;
 
-        public TelegramBotClient _client;
+        private TelegramBotClient _client;
 
         private readonly string _token;
 
@@ -56,6 +57,10 @@ namespace Mod_10
         public void PushCollectionAdmin(string text, long id)
         {
             _messageReader.MessageLog(id, "Admin", text);
+        }
+        public ObservableCollection<Message> ListPull()
+        {
+            return _messageReader.PullMessage();
         }
 
         /// <summary>
