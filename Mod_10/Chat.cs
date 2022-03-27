@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Mod_10
 {
@@ -8,7 +9,7 @@ namespace Mod_10
         {
             this.id = id;
             this.name = name;
-            this.messageCollection = new List<Message>();
+            this.messageCollection = new ObservableCollection<Message>();
         }
 
         public void Write(string text, string date)
@@ -18,12 +19,12 @@ namespace Mod_10
 
         public long Id { get { return this.id; } set { this.id = value; } }
 
-        public string Name { get { return this.name; } set { this.name = value; } }
+        public string UserName { get { return this.name; } set { this.name = value; } }
 
-        public List<Message> MessageCollection  { get { return this.messageCollection; }set { this.messageCollection = value; } }
+        public ObservableCollection<Message> MessageCollection  { get { return this.messageCollection; }set { this.messageCollection = value; } }
 
         private long id;
         private string name;
-        private List<Message> messageCollection;
+        private ObservableCollection<Message> messageCollection;
     }
 }

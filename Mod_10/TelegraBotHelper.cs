@@ -13,25 +13,18 @@ namespace Mod_10
     public class TelegraBotHelper
     {
         private MainWindow _window;
-
         private MessageReader _messageReader;
-
-
-        private Telegram.Bot.Types.Update e;
-        IEnumerable<IGrouping<string, FileInfo>> queryGroupByExt;
-
-        private string fileExtension;
-        private string filePath;
-        private string fileMessage;
-        private bool callback;
-        private ListBox _logList;
-
-        private Button button;
-
-        private string path;
-
+        private Button _button;
         private TelegramBotClient _client;
 
+        private Telegram.Bot.Types.Update _e;
+        IEnumerable<IGrouping<string, FileInfo>> _queryGroupByExt;
+
+        private string _fileExtension;
+        private string _filePath;
+        private string _fileMessage;
+        private bool _callback;
+        private string _path;
         private readonly string _token;
 
         /// <summary>
@@ -42,11 +35,11 @@ namespace Mod_10
         {
             _window = window;
             _token = File.ReadAllText(Environment.CurrentDirectory + @"\Token_bot.txt");
-            button = new Button();
+            _button = new Button();
             _messageReader = new MessageReader(_window, logList);
         }
 
-        public List<Message> GetMessageCollection(long id)
+        public ObservableCollection<Message> GetMessageCollection(long id)
         {
             return _messageReader.GetMessageCollection(id);
         }
@@ -58,10 +51,6 @@ namespace Mod_10
         {
             _messageReader.MessageLog(id, "Admin", text);
         }
-        public ObservableCollection<Message> ListPull()
-        {
-            return _messageReader.PullMessage();
-        }
 
         /// <summary>
         /// проверка на наличие новых данных + Timeout
@@ -71,10 +60,10 @@ namespace Mod_10
 
             await Task.Run(() =>
             {
-                if (path == null)
+                if (_path == null)
                 {
-                    path = Environment.CurrentDirectory;
-                    Directory.CreateDirectory(path + "\\File\\");
+                    _path = Environment.CurrentDirectory;
+                    Directory.CreateDirectory(_path + "\\File\\");
                 }
 
                 _client = new Telegram.Bot.TelegramBotClient(_token);
@@ -91,7 +80,7 @@ namespace Mod_10
                             {
                                 foreach (var e in updates)
                                 {
-                                    this.e = e;
+                                    this._e = e;
                                     MessageReader();
                                     offset = e.Id + 1;
                                     if (e.Message != null)
@@ -121,9 +110,9 @@ namespace Mod_10
         /// </summary>
         private async void MessageReader()
         {
-            var msg = e.Message;
+            var msg = _e.Message;
 
-            switch (e.Type)
+            switch (_e.Type)
             {
                 case Telegram.Bot.Types.Enums.UpdateType.Message:
                     if (msg.Text != null)
@@ -132,14 +121,14 @@ namespace Mod_10
                     }
                     break;
                 case Telegram.Bot.Types.Enums.UpdateType.CallbackQuery:
-                    if (this.callback)
+                    if (this._callback)
                     {
-                        await _client.SendTextMessageAsync(e.CallbackQuery.Message.Chat.Id, $"выбранно: {e.CallbackQuery.Data}");
+                        await _client.SendTextMessageAsync(_e.CallbackQuery.Message.Chat.Id, $"выбранно: {_e.CallbackQuery.Data}");
                         DocProcessing();
                     }
                     else
                     {
-                        Callback(e.CallbackQuery.Data);
+                        Callback(_e.CallbackQuery.Data);
                     }
 
                     break;
@@ -147,7 +136,7 @@ namespace Mod_10
                     Console.WriteLine("необработанный тип данных");
                     break;
             }
-            if (e.Message != null)
+            if (_e.Message != null)
             {
                 TypeFile();
             }
@@ -159,10 +148,10 @@ namespace Mod_10
         /// </summary>
         private void ConsoleStatus()
         {
-            if (e.Message != null)
+            if (_e.Message != null)
             {
-                string text = $"{DateTime.Now.ToLongTimeString()}:  {e.Message.Chat.FirstName} {e.Message.Chat.Id} {e.Message.Text}";
-                Console.WriteLine($"{text} TypeMessage: {e.Message.Type.ToString()}");
+                string text = $"{DateTime.Now.ToLongTimeString()}:  {_e.Message.Chat.FirstName} {_e.Message.Chat.Id} {_e.Message.Text}";
+                Console.WriteLine($"{text} TypeMessage: {_e.Message.Type.ToString()}");
             }
         }
 
@@ -173,13 +162,13 @@ namespace Mod_10
         /// <param name="id"></param>
         private async void WorkingWithArchive(string text)
         {
-            callback = false;
-            Download dow = new Download(e, _client, fileExtension, fileMessage, filePath);
-            long id = e.Message.Chat.Id;
+            _callback = false;
+            Download dow = new Download(_e, _client, _fileExtension, _fileMessage, _filePath);
+            long id = _e.Message.Chat.Id;
             switch (text)
             {
                 case "/start":
-                    await _client.SendTextMessageAsync(id, "Привет", replyMarkup: button.GetButtonse());
+                    await _client.SendTextMessageAsync(id, "Привет", replyMarkup: _button.GetButtonse());
                     break;
                 case "Архив Фото":
                     WorkingWithFile("*.jpeg");
@@ -194,15 +183,15 @@ namespace Mod_10
                     WorkingWithFile("*.mp4");
                     break;
                 default:
-                    if (this.filePath == null)
+                    if (this._filePath == null)
                     {
                         await _client.SendTextMessageAsync(id, "Привет, я не понимаю тебя, возможно я еще не умею делать то чего ты хочешь, обратись к моему создателю и возможно он научит меня тому что тебе нужно:) для Запуска нажми: start",
-                        replyMarkup: button.GetButtonseStart());
+                        replyMarkup: _button.GetButtonseStart());
                     }
                     else
                     {
                         dow.UploadingFile();
-                        this.filePath = null;
+                        this._filePath = null;
                     }
                     break;
             }
@@ -212,38 +201,38 @@ namespace Mod_10
         /// </summary>
         private async void TypeFile()
         {
-            switch (e.Message.Type)
+            switch (_e.Message.Type)
             {
                 case Telegram.Bot.Types.Enums.MessageType.Photo:
-                    string fileIdPhoto = e.Message.Photo[e.Message.Photo.Length - 1].FileId;
-                    await _client.SendTextMessageAsync(e.Message.Chat.Id, "Введите название фотографии или нажмите кнопку дата и фото будет присвоено названия текущего времени и даты по МСК", replyMarkup: button.GetButtonseDate());
-                    this.fileExtension = ".jpeg";
-                    this.filePath = fileIdPhoto;
-                    this.fileMessage = "Фото загружено";
+                    string fileIdPhoto = _e.Message.Photo[_e.Message.Photo.Length - 1].FileId;
+                    await _client.SendTextMessageAsync(_e.Message.Chat.Id, "Введите название фотографии или нажмите кнопку дата и фото будет присвоено названия текущего времени и даты по МСК", replyMarkup: _button.GetButtonseDate());
+                    this._fileExtension = ".jpeg";
+                    this._filePath = fileIdPhoto;
+                    this._fileMessage = "Фото загружено";
                     break;
                 case Telegram.Bot.Types.Enums.MessageType.Video:
-                    string formatVideo = e.Message.Video.MimeType;
+                    string formatVideo = _e.Message.Video.MimeType;
                     formatVideo = Expansion(formatVideo);
-                    this.fileExtension = $".{formatVideo}";
-                    this.filePath = e.Message.Video.FileId;
-                    this.fileMessage = "Видео загружено";
-                    await _client.SendTextMessageAsync(e.Message.Chat.Id, "Введите название видео или нажмите кнопку дата и фото будет присвоено названия текущего времени и даты по МСК", replyMarkup: button.GetButtonseDate());
+                    this._fileExtension = $".{formatVideo}";
+                    this._filePath = _e.Message.Video.FileId;
+                    this._fileMessage = "Видео загружено";
+                    await _client.SendTextMessageAsync(_e.Message.Chat.Id, "Введите название видео или нажмите кнопку дата и фото будет присвоено названия текущего времени и даты по МСК", replyMarkup: _button.GetButtonseDate());
                     break;
                 case Telegram.Bot.Types.Enums.MessageType.Voice:
-                    string formatVoice = e.Message.Voice.MimeType;
+                    string formatVoice = _e.Message.Voice.MimeType;
                     formatVoice = Expansion(formatVoice);
-                    this.fileExtension = $".{formatVoice}";
-                    this.filePath = e.Message.Voice.FileId;
-                    this.fileMessage = "Аудио запись загружена";
-                    await _client.SendTextMessageAsync(e.Message.Chat.Id, "Введите название аудио записи или нажмите кнопку дата и фото будет присвоено названия текущего времени и даты по МСК", replyMarkup: button.GetButtonseDate());
+                    this._fileExtension = $".{formatVoice}";
+                    this._filePath = _e.Message.Voice.FileId;
+                    this._fileMessage = "Аудио запись загружена";
+                    await _client.SendTextMessageAsync(_e.Message.Chat.Id, "Введите название аудио записи или нажмите кнопку дата и фото будет присвоено названия текущего времени и даты по МСК", replyMarkup: _button.GetButtonseDate());
                     break;
                 case Telegram.Bot.Types.Enums.MessageType.Document:
-                    string formatDoc = e.Message.Document.MimeType;
+                    string formatDoc = _e.Message.Document.MimeType;
                     formatDoc = Expansion(formatDoc);
-                    this.fileExtension = $".{formatDoc}";
-                    this.filePath = e.Message.Document.FileId;
-                    this.fileMessage = "Документ загружен";
-                    await _client.SendTextMessageAsync(e.Message.Chat.Id, "Введите название Файла или нажмите кнопку дата и фото будет присвоено названия текущего времени и даты по МСК", replyMarkup: button.GetButtonseDate());
+                    this._fileExtension = $".{formatDoc}";
+                    this._filePath = _e.Message.Document.FileId;
+                    this._fileMessage = "Документ загружен";
+                    await _client.SendTextMessageAsync(_e.Message.Chat.Id, "Введите название Файла или нажмите кнопку дата и фото будет присвоено названия текущего времени и даты по МСК", replyMarkup: _button.GetButtonseDate());
                     break;
             }
         }
@@ -263,8 +252,8 @@ namespace Mod_10
         private async void WorkingWithFile(string type)
         {
 
-            long id = e.Message.Chat.Id;
-            string[] fotoList = Directory.GetFiles(this.path + "\\File", type);
+            long id = _e.Message.Chat.Id;
+            string[] fotoList = Directory.GetFiles(this._path + "\\File", type);
             Dictionary<int, string> path = new Dictionary<int, string>();
             int inckrement = 0;
             if (fotoList.Length == 0)
@@ -281,7 +270,7 @@ namespace Mod_10
                     FileInfo file = new FileInfo(item);
                     string data = file.Extension.ToLower();
                     data = string.Join(",", file.Name, data);
-                    var r = _client.SendTextMessageAsync(id, file.Name, replyMarkup: button.GetInLineButton(data)).Result;
+                    var r = _client.SendTextMessageAsync(id, file.Name, replyMarkup: _button.GetInLineButton(data)).Result;
                 }
             }
         }
@@ -291,23 +280,23 @@ namespace Mod_10
         /// <param name="path"></param>
         private void Callback(string path)
         {
-            Download dow = new Download(e, _client, fileExtension, fileMessage, filePath);
+            Download dow = new Download(_e, _client, _fileExtension, _fileMessage, _filePath);
             string[] data = path.Split(',');
             if (data.Length == 2)
             {
                 switch (data[1])
                 {
                     case ".jpeg":
-                        dow.DownloadPhoto(this.path + "\\File\\" + data[0]);
+                        dow.DownloadPhoto(this._path + "\\File\\" + data[0]);
                         break;
                     case ".mp4":
-                        dow.DownloadVideo(this.path + "\\File\\" + data[0]);
+                        dow.DownloadVideo(this._path + "\\File\\" + data[0]);
                         break;
                     case ".ogg":
-                        dow.DownloadAudio(this.path + "\\File\\" + data[0]);
+                        dow.DownloadAudio(this._path + "\\File\\" + data[0]);
                         break;
                     default:
-                        dow.DownLoadFile(this.path + "\\File\\" + data[0]);
+                        dow.DownLoadFile(this._path + "\\File\\" + data[0]);
                         break;
                 }
             }
@@ -326,7 +315,7 @@ namespace Mod_10
                 orderby fileGroup.Key
                 select fileGroup;
 
-            this.queryGroupByExt = queryGroupByExt;
+            this._queryGroupByExt = queryGroupByExt;
             KeyProcessing();
         }
         /// <summary>
@@ -335,20 +324,20 @@ namespace Mod_10
         /// <param name="trimLength"></param>
         private async void KeyProcessing()
         {
-            int count = queryGroupByExt.Count();
+            int count = _queryGroupByExt.Count();
             if (count != 0)
             {
-                long id = e.Message.Chat.Id;
-                foreach (var fileGroup in this.queryGroupByExt)
+                long id = _e.Message.Chat.Id;
+                foreach (var fileGroup in this._queryGroupByExt)
                 {
-                    var r = _client.SendTextMessageAsync(id, $"расширение: {fileGroup.Key}", replyMarkup: button.GetInLineButtonFile(fileGroup.Key)).Result;
+                    var r = _client.SendTextMessageAsync(id, $"расширение: {fileGroup.Key}", replyMarkup: _button.GetInLineButtonFile(fileGroup.Key)).Result;
                 }
             }
             else
             {
-                await _client.SendTextMessageAsync(e.Message.Chat.Id, "Упс, похоже архив пуст");
+                await _client.SendTextMessageAsync(_e.Message.Chat.Id, "Упс, похоже архив пуст");
             }
-            this.callback = true;
+            this._callback = true;
         }
         /// <summary>
         /// вывод файлов по ключу
@@ -356,20 +345,20 @@ namespace Mod_10
         private void DocProcessing()
         {
 
-            foreach (var fileGroup in this.queryGroupByExt)
+            foreach (var fileGroup in this._queryGroupByExt)
             {
-                if (e.CallbackQuery != null && fileGroup.Key == e.CallbackQuery.Data)
+                if (_e.CallbackQuery != null && fileGroup.Key == _e.CallbackQuery.Data)
                 {
                     foreach (var item in fileGroup)
                     {
                         FileInfo type = new FileInfo(Convert.ToString(item));
                         string dataDoc = type.Extension.ToLower();
                         dataDoc = string.Join(",", Convert.ToString(item.Name), dataDoc);
-                        var dok = _client.SendTextMessageAsync(e.CallbackQuery.Message.Chat.Id, Convert.ToString(item), replyMarkup: button.GetInLineButton(dataDoc)).Result;
+                        var dok = _client.SendTextMessageAsync(_e.CallbackQuery.Message.Chat.Id, Convert.ToString(item), replyMarkup: _button.GetInLineButton(dataDoc)).Result;
                     }
                 }
             }
-            this.callback = false;
+            this._callback = false;
         }
     }
 }

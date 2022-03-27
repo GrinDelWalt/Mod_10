@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace Mod_10
 {
@@ -14,7 +17,7 @@ namespace Mod_10
     {
         private TelegraBotHelper _hlp;
 
-        private long id;
+        private long _id;
         public MainWindow()
         {
             InitializeComponent();
@@ -23,29 +26,36 @@ namespace Mod_10
 
             _hlp = new TelegraBotHelper(this, logList);
             _hlp.GetUpdates();
+        }
 
-        }
-        private void ButtonMessegePush_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
         private void logList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (idBox.Text != "")
             {
-                id = Convert.ToInt64(idBox.Text);
+                _id = Convert.ToInt64(idBox.Text);
+                chatList.ItemsSource = _hlp.GetMessageCollection(_id);
             }
-            chatList.ItemsSource = _hlp.GetMessageCollection(id);
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            MessagePushChat();
+        }
+
+        private void messageAdminBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                MessagePushChat();
+            }
+        }
+        private void MessagePushChat()
+        {
             string text = messageAdminBox.Text;
-           
+
             if (text != "")
             {
-                _hlp.PushBotMessageAdmin(text, id);
-                _hlp.PushCollectionAdmin(text, id);
-                chatList.ItemsSource = _hlp.ListPull();
+                _hlp.PushBotMessageAdmin(text, _id);
+                _hlp.PushCollectionAdmin(text, _id);
             }
             messageAdminBox.Clear();
         }
