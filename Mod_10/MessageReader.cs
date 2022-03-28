@@ -17,8 +17,6 @@ namespace Mod_10
 
         public ObservableCollection<Chat> Chats { get; set; }
 
-        public ObservableCollection<Message> Messages { get; set; }
-
         public MessageReader(MainWindow window, ListBox logList)
         {
             _window = window;
@@ -58,7 +56,7 @@ namespace Mod_10
                 }
                 
             });
-            _serelaseJson.RecordingJson(Chats, Messages);
+            _serelaseJson.RecordingJson(Chats);
         }
         /// <summary>
         /// Get message collection

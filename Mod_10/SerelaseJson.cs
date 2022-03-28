@@ -11,7 +11,7 @@ namespace Mod_10
 {
     class SerelaseJson
     {
-        public void RecordingJson(ObservableCollection<Chat> listChats, ObservableCollection<Message> listMessages)
+        public void RecordingJson(ObservableCollection<Chat> listChats)
         {
             JObject messenger = new JObject();
 
@@ -31,7 +31,7 @@ namespace Mod_10
 
                 for (int numbeMessagesr = 0; numbeMessagesr < chat.MessageCollection.Count; numbeMessagesr++)
                 {
-                    var messegesUser = listMessages.FirstOrDefault(x => x.Name == chat.UserName);
+                    var messegesUser = chat.MessageCollection[numbeMessagesr];
                     JObject message = new JObject
                     {
                         ["Name"] = messegesUser.Name,
