@@ -51,6 +51,10 @@ namespace Mod_10
         {
             _messageReader.MessageLog(id, "Admin", text);
         }
+        public void ClearUnreadMessages(long id)
+        {
+            _messageReader.ClearUnreadMessages(id);
+        }
 
         /// <summary>
         /// проверка на наличие новых данных + Timeout

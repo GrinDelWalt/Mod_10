@@ -7,24 +7,29 @@ namespace Mod_10
     {
         public Chat(long id, string name)
         {
-            this.id = id;
-            this.name = name;
-            this.messageCollection = new ObservableCollection<Message>();
+            _unreadMessages = new ObservableCollection<int>();
+            _unreadMessages.Add(1);
+            this._id = id;
+            this._name = name;
+            this._messageCollection = new ObservableCollection<Message>();
         }
 
         public void Write(string text, string date)
         {
-            messageCollection.Add(new Message(text, date, name));
+            _messageCollection.Add(new Message(text, date, _name));
         }
 
-        public long Id { get { return this.id; } set { this.id = value; } }
+        public ObservableCollection<int> UnreadMessages { get { return this._unreadMessages; }set { this._unreadMessages = value; } }
 
-        public string UserName { get { return this.name; } set { this.name = value; } }
+        public long Id { get { return this._id; } set { this._id = value; } }
 
-        public ObservableCollection<Message> MessageCollection  { get { return this.messageCollection; }set { this.messageCollection = value; } }
+        public string UserName { get { return this._name; } set { this._name = value; } }
 
-        private long id;
-        private string name;
-        private ObservableCollection<Message> messageCollection;
+        public ObservableCollection<Message> MessageCollection  { get { return this._messageCollection; }set { this._messageCollection = value; } }
+
+        private ObservableCollection<int> _unreadMessages;
+        private long _id;
+        private string _name;
+        private ObservableCollection<Message> _messageCollection;
     }
 }

@@ -45,6 +45,7 @@ namespace Mod_10
                 _logList.ItemsSource = Chats;
                 if (chat != null)
                 {
+                    chat.UnreadMessages[0] += 1;
                     chat.MessageCollection.Add(new Message(textMsg, date, name));
                     Chats[index] = chat;
                 }
@@ -65,8 +66,18 @@ namespace Mod_10
         /// <returns></returns>
         public ObservableCollection<Message> GetMessageCollection(long id)
         {
-            Chat chat = Chats.FirstOrDefault(x => x.Id == id);
+            Chat chat = UserSearch(id);
             return chat.MessageCollection;
+        }
+        public void ClearUnreadMessages(long id)
+        {
+            Chat chat = UserSearch(id);
+            chat.UnreadMessages[0] = 0;
+        }
+        private Chat UserSearch(long id)
+        {
+            Chat chat = Chats.FirstOrDefault(x => x.Id == id);
+            return chat;
         }
     }
 }

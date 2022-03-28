@@ -30,7 +30,9 @@
                  Height="Auto"
                  Grid.RowSpan="1"
                  Width="190" 
-                 SelectionChanged="logList_SelectionChanged" Background="#FF494949" Foreground="White">
+                 SelectionChanged="logList_SelectionChanged"
+                 Background="#FF494949"
+                 Foreground="White">
             
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -40,6 +42,14 @@
                             CornerRadius="10">
                         <StackPanel Margin="10">
                             <TextBlock Text="{Binding UserName}" Margin="0" FontSize="15"/>
+                            <Border x:Name="userUnreadMessages"
+                                    BorderBrush="Green"
+                                    Background="Green"
+                                    Margin="2"
+                                    BorderThickness="2"
+                                    CornerRadius="20">
+                                <TextBlock Text="{Binding UnreadMessages[0]}" FontSize="10" TextAlignment="Center"/>
+                            </Border>
                         </StackPanel>
                     </Border>
                 </DataTemplate>

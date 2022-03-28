@@ -34,6 +34,8 @@ namespace Mod_10
             {
                 _id = Convert.ToInt64(idBox.Text);
                 chatList.ItemsSource = _hlp.GetMessageCollection(_id);
+                _hlp.ClearUnreadMessages(_id);
+                
             }
         }
         private void Button_Click(object sender, RoutedEventArgs e)
