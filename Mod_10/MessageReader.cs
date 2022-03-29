@@ -45,9 +45,16 @@ namespace Mod_10
                 _logList.ItemsSource = Chats;
                 if (chat != null)
                 {
-                    chat.UnreadMessages[0] += 1;
                     chat.MessageCollection.Add(new Message(textMsg, date, name));
                     Chats[index] = chat;
+                    if (name == "AdminGrinBot")
+                    {
+                        chat.UnreadMessages[0] = 0;
+                    }
+                    else
+                    {
+                        chat.UnreadMessages[0] += 1;
+                    }
                 }
                 else
                 {

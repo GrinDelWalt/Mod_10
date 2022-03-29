@@ -16,11 +16,11 @@ namespace Mod_10
             JObject messenger = new JObject();
 
             JArray users = new JArray();
-            JArray messages = new JArray();
 
             messenger["Messenger"] = true;
             for (int userNumber = 0; userNumber < listChats.Count; userNumber++)
             {
+                JArray messages = new JArray();
                 var chat = listChats[userNumber];
                 JObject user = new JObject
                 {

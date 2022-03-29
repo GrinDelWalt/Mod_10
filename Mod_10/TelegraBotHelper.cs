@@ -49,7 +49,7 @@ namespace Mod_10
         }
         public void PushCollectionAdmin(string text, long id)
         {
-            _messageReader.MessageLog(id, "Admin", text);
+            _messageReader.MessageLog(id, "AdminGrinBot", text);
         }
         public void ClearUnreadMessages(long id)
         {
